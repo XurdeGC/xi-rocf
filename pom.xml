@@ -10,84 +10,71 @@
     <packaging>pom</packaging>
 
     <name>XI ROCF</name>
-    <description>Aplicación pa xenerar l'once titular del Real Oviedo.</description>
+    <description>A web application to make up Real Oviedo starting line-ups.</description>
     <url>https://github.com/XurdeGC/xi-rocf</url>
     <inceptionYear>2023</inceptionYear>
 
     <modules>
-        <module>xi-rocf-dominiu</module>
+        <module>xi-rocf-domain</module>
     </modules>
 
     <distributionManagement>
         <site>
-            <id>sitiu-xi-rocf</id>
-            <url>scp://www.xurdegc.net/sitiu/xi-rocf/</url>
+            <id>xi-rocf-site</id>
+            <url>scp://www.xurdegc.net/site/xi-rocf/</url>
         </site>
     </distributionManagement>
 
     <properties>
-        <version.java>21</version.java>
+        <java.version>21</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <!-- Versiones de dependencies -->
-        <hibernate-validator.version>8.0.1.Final</hibernate-validator.version>
-        <expressly.version>5.0.0</expressly.version>
-        <byte-buddy.version>1.14.11</byte-buddy.version>
-        <junit-jupiter.version>5.10.1</junit-jupiter.version>
-        <assertj.version>3.25.1</assertj.version>
-        <!-- Versiones de plugins -->
-        <maven-enforcer-plugin.version>3.4.1</maven-enforcer-plugin.version>
-        <maven-compiler-plugin.version>3.12.1</maven-compiler-plugin.version>
-        <maven-surefire-plugin.version>3.2.5</maven-surefire-plugin.version>
-        <maven-dependency-plugin.version>3.6.1</maven-dependency-plugin.version>
-        <maven-clean-plugin.version>3.3.2</maven-clean-plugin.version>
-        <maven-project-info-reports-plugin.version>3.5.0</maven-project-info-reports-plugin.version>
-        <cyclonedx-maven-plugin.version>2.7.11</cyclonedx-maven-plugin.version>
-        <jacoco-maven-plugin.version>0.8.11</jacoco-maven-plugin.version>
-        <versions-maven-plugin.version>2.16.2</versions-maven-plugin.version>
+        <require.maven.version>3.9.8</require.maven.version>
+        <!-- Dependency versions -->
+        <junit-bom.version>5.11.0</junit-bom.version>
+        <assertj.version>3.26.3</assertj.version>
+        <!-- Plugin versions -->
+        <maven-clean-plugin.version>3.4.0</maven-clean-plugin.version>
+        <maven-enforcer-plugin.version>3.5.0</maven-enforcer-plugin.version>
+        <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
+        <maven-surefire-plugin.version>3.4.0</maven-surefire-plugin.version>
+        <maven-assembly-plugin.version>3.7.1</maven-assembly-plugin.version>
+        <maven-antrun-plugin.version>3.1.0</maven-antrun-plugin.version>
+        <maven-dependency-plugin.version>3.7.1</maven-dependency-plugin.version>
+        <maven-release-plugin.version>3.1.1</maven-release-plugin.version>
+        <maven-jar-plugin.version>3.4.2</maven-jar-plugin.version>
+        <maven-deploy-plugin.version>3.1.2</maven-deploy-plugin.version>
+        <maven-install-plugin.version>3.1.2</maven-install-plugin.version>
+        <maven-site-plugin.version>3.20.0</maven-site-plugin.version>
+        <maven-project-info-reports-plugin.version>3.6.2</maven-project-info-reports-plugin.version>
+        <cyclonedx-maven-plugin.version>2.8.1</cyclonedx-maven-plugin.version>
+        <jacoco-maven-plugin.version>0.8.12</jacoco-maven-plugin.version>
+        <versions-maven-plugin.version>2.17.1</versions-maven-plugin.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
-            <!-- Validación de modelu de dominiu -->
+            <!-- Unit testing -->
             <dependency>
-                <groupId>org.hibernate.validator</groupId>
-                <artifactId>hibernate-validator</artifactId>
-                <version>${hibernate-validator.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.glassfish.expressly</groupId>
-                <artifactId>expressly</artifactId>
-                <version>${expressly.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>net.bytebuddy</groupId>
-                <artifactId>byte-buddy</artifactId>
-                <version>${byte-buddy.version}</version>
-            </dependency>
-            <!-- Tests unitarios -->
-            <dependency>
-                <groupId>org.junit.jupiter</groupId>
-                <artifactId>junit-jupiter</artifactId>
-                <version>${junit-jupiter.version}</version>
+                <groupId>org.junit</groupId>
+                <artifactId>junit-bom</artifactId>
+                <version>${junit-bom.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>org.assertj</groupId>
                 <artifactId>assertj-core</artifactId>
                 <version>${assertj.version}</version>
+                <scope>test</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
 
     <build>
         <finalName>xi_rocf</finalName>
+
         <plugins>
-            <!-- Llimpieza de proyeutu -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-clean-plugin</artifactId>
-                <version>${maven-clean-plugin.version}</version>
-            </plugin>
-            <!-- Versión de Maven -->
+            <!-- Maven version -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
@@ -101,23 +88,23 @@
                         <configuration>
                             <rules>
                                 <requireMavenVersion>
-                                    <version>3.9.5</version>
+                                    <version>${require.maven.version}</version>
                                 </requireMavenVersion>
                             </rules>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
-            <!-- Versión de Java -->
+            <!-- Java version -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven-compiler-plugin.version}</version>
                 <configuration>
-                    <release>${version.java}</release>
+                    <release>${java.version}</release>
                 </configuration>
             </plugin>
-            <!-- Execución concurrente de los tests de JUnit -->
+            <!-- Concurrent JUnit test execution -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -126,18 +113,13 @@
                     <properties>
                         <configurationParameters>
                             junit.jupiter.execution.parallel.enabled = true
-                            junit.jupiter.execution.parallel.mode.default = concurrent
+                            junit.jupiter.execution.parallel.mode.default = same_thread
+                            junit.jupiter.execution.parallel.mode.classes.default = concurrent
                         </configurationParameters>
                     </properties>
                 </configuration>
             </plugin>
-            <!-- Informes del proyeutu -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-project-info-reports-plugin</artifactId>
-                <version>${maven-project-info-reports-plugin.version}</version>
-            </plugin>
-            <!-- Xeneración de SBOM -->
+            <!-- SBOM generation -->
             <plugin>
                 <groupId>org.cyclonedx</groupId>
                 <artifactId>cyclonedx-maven-plugin</artifactId>
@@ -160,26 +142,67 @@
 
         <pluginManagement>
             <plugins>
+                <!-- Project cleaning -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <version>${maven-clean-plugin.version}</version>
+                </plugin>
+                <!-- JAR building -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>${maven-jar-plugin.version}</version>
+                </plugin>
+                <!-- Archive assembly descriptors -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-assembly-plugin</artifactId>
+                    <version>${maven-assembly-plugin.version}</version>
+                </plugin>
+                <!-- Ant -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <version>${maven-antrun-plugin.version}</version>
+                </plugin>
                 <!-- Dependencies -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-dependency-plugin</artifactId>
                     <version>${maven-dependency-plugin.version}</version>
                 </plugin>
-                <!-- Validación de rexistros -->
+                <!-- Release -->
                 <plugin>
-                    <groupId>net.bytebuddy</groupId>
-                    <artifactId>byte-buddy-maven-plugin</artifactId>
-                    <version>${byte-buddy.version}</version>
-                    <executions>
-                        <execution>
-                            <goals>
-                                <goal>transform</goal>
-                            </goals>
-                        </execution>
-                    </executions>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-release-plugin</artifactId>
+                    <version>${maven-release-plugin.version}</version>
                 </plugin>
-                <!-- Cobertoria de códigu -->
+                <!-- Deploy -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>${maven-deploy-plugin.version}</version>
+                </plugin>
+                <!-- Install -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-install-plugin</artifactId>
+                    <version>${maven-install-plugin.version}</version>
+                </plugin>
+                <!-- Site -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-site-plugin</artifactId>
+                    <version>${maven-site-plugin.version}</version>
+                </plugin>
+                <!-- Project reporting -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-project-info-reports-plugin</artifactId>
+                    <version>${maven-project-info-reports-plugin.version}</version>
+                </plugin>
+                <!-- Code coverage -->
                 <plugin>
                     <groupId>org.jacoco</groupId>
                     <artifactId>jacoco-maven-plugin</artifactId>
@@ -205,10 +228,14 @@
 
     <reporting>
         <plugins>
+            <!-- Artifact version reporting -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>versions-maven-plugin</artifactId>
                 <version>${versions-maven-plugin.version}</version>
+                <configuration>
+                    <ignoredVersions>.*-RC.*,.*-M.*,.*-alpha.*,.*-beta.*</ignoredVersions>
+                </configuration>
                 <reportSets>
                     <reportSet>
                         <reports>
